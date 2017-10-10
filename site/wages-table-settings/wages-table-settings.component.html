@@ -7,10 +7,28 @@
       </div>
 </div> -->
 
+<br/>
 <form class="form-inline">
-  <div class="form-group">
-    <label for="exampleInputName2">page size:</label>
-    <input type="text" class="form-control pageSize" placeholder="25 by default">
-  </div>
-  <button class="btn btn-default">Set</button>
-</form>
+  <label for="exampleInputName2">Filter:</label>
+
+  <span class="filterByMen" style="color:blueviolet; cursor: pointer">where men make more</span> |
+  <span class="filterByWomen" style="color:blueviolet; cursor: pointer">where Women make more</span>
+
+  <br/><br/>
+
+  <form class="form-inline">
+    <div class="form-group">
+      <label for="exampleInputName2">Minimum Difference:</label>
+      <input type="text" class="form-control filterByMinDiff" placeholder="ex: 0.5">
+    </div>
+    <button class="btn btn-default btn-set-min">Set</button>
+  </form>
+  <br/>
+  <form class="form-inline">
+    <div class="form-group">
+      <label for="exampleInputName2">page size:</label>
+      <input type="text" class="form-control pageSize" placeholder="25 by default">
+    </div>
+    <button class="btn btn-default btn-set-page">Set</button>
+  </form>
+  <br/>

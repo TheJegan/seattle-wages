@@ -1,4 +1,5 @@
 <table-settings></table-settings>
+<span class="prev"><--Prev</span> | <span class="next"> Next--></span>
 <table class="table">
     <thead>
       <tr>
@@ -14,8 +15,12 @@
             <th scope="row">{{job_title}}</th>
             <td>{{average_male_wage}}</td>
             <td>{{average_female_wage}}</td>
-            <td>{{difference_in_wage}}</td>
+            <td>{{difference_in_wage}}</td> <!-- if value less that zero women make more couldnt figure out the templating-->
           </tr>
         {{/each}}
     </tbody>
 </table>
+
+<!-- should be own component -->
+
+<br />

@@ -1,3 +1,3 @@
 $(document).ready(function () {
-  new Wages();
+  new Wages(wagesService);
 });

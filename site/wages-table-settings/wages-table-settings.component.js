@@ -12,9 +12,24 @@ var wageSettings = function (settings) {
   }
 
   this.bindEvent = function () {
-    self.$el.find('.btn').unbind('click').click(function (e) {
+    self.$el.find('.btn-set-page').unbind('click').click(function (e) {
       var pageLimit = self.$el.find('.pageSize').val();
       self.model.setPageLimit(pageLimit);
+    });
+
+    self.$el.find('.btn-set-min').unbind('click').click(function (e) {
+      var diff = self.$el.find('.filterByMinDiff').val();
+      self.model.filterByMinimumDiff(diff);
+    });
+
+    self.$el.find('.filterByMen').unbind('click').click(function () {
+        //uncheck others
+        self.filterByMensWages();
+    });
+
+    self.$el.find('.filterByWomen').unbind('click').click(function () {
+        //uncheck others
+        self.filterByWomensWages();
     });
   }
 
@@ -37,6 +52,18 @@ var wageSettings = function (settings) {
     self.$el.html(
       self.template()
     );
+  }
+
+  this.filterByMensWages = function () {
+    self.model.filterByMenMakeMore();
+  }
+
+  this.filterByWomensWages = function () {
+    self.model.filterByWomenMakeMore();
+  }
+
+  this.filterByMinDiff = function (diff) {
+    self.model.filterByMinimumDiff(diff)
   }
 
   this.initialize();

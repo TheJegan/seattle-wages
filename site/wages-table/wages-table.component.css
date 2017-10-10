@@ -1,3 +1,4 @@
-th {
+.prev, .next {
   cursor: pointer;
+  font-weight: bold;
 }

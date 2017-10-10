@@ -1,26 +1,39 @@
 
-var Wages = function () {
+var Wages = function (WageService) {
   var self = this;
-  this.wages = new wagesService();
+  this.service = new WageService();
+  this.collection = new WageCollection();
   this.template;
   this.$el = $('body');
   this.initialize = function () {
+    self.collection.on('change', self.render);
+
     self.loadTemplate().then(function () {
-      self.wages.fetch();
-      self.wages.on('change', self.render);
+      self.render({ wage: [], metadata: [] });
+      self.service.fetch().then(function (data) {
+        self.collection.generate(data);
+      });
     });
   }
 
   this.bindEvents = function () {
     this.$el.find('th').unbind('click').click(function (e) {
-      // console.log('click');
       self.sort();
+    });
+
+    this.$el.find('.prev').unbind('click').click(function (e) {
+      self.collection.pagePrev();
+    });
+
+    this.$el.find('.next').unbind('click').click(function (e) {
+
+      self.collection.pageNext();
     });
   }
 
   this.renderTableSettings = function () {
 
-    new wageSettings({ $el: self.$el.find('table-settings'), model: self.wages } );
+    new wageSettings({ $el: self.$el.find('table-settings'), model: self.collection });
   }
 
   this.loadTemplate = function () {
@@ -47,8 +60,9 @@ var Wages = function () {
   }
 
   this.sort = function () {
-    self.wages.sort("average_male_wage");
+    self.collection.sort("average_male_wage");
   }
+
 
   this.initialize();
 }
