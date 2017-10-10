@@ -1,0 +1,21 @@
+<table-settings></table-settings>
+<table class="table">
+    <thead>
+      <tr>
+        <th>Job Title</th>
+        <th>Average female wage</th>
+        <th>Average male wage</th>
+        <th>Difference in wage (Gender)</th>
+      </tr>
+    </thead>
+    <tbody>
+        {{#each wage}}
+          <tr>
+            <th scope="row">{{job_title}}</th>
+            <td>{{average_male_wage}}</td>
+            <td>{{average_female_wage}}</td>
+            <td>{{difference_in_wage}}</td>
+          </tr>
+        {{/each}}
+    </tbody>
+</table>
