@@ -1,5 +1,5 @@
 
-var Wages = function (WageService) {
+var WageTable = function (WageService) {
   var self = this;
   this.service = new WageService();
   this.collection = new WageCollection();
