@@ -1,7 +1,7 @@
 var wagesService = function () {
   var self = this;
   this.pageLimit = 25;
-  this.tableHeader = [];
+  this.tableHeader = []; //was trying to do a bonus of editing the columns, but ran out of time
   this.tableBody = [];
   this.paged = [];
   this.JOB_TITLE;
@@ -14,8 +14,11 @@ var wagesService = function () {
   }
 
   this.setPageLimit = function (limit) {
-    if (limit > 1)
-      this.defaultPageLimit = limit;
+    if (limit > 1) {
+      self.pageLimit = parseInt(limit);
+    }
+
+    self.page(0);
   }
 
   this.fetch = function (page) {
@@ -39,8 +42,8 @@ var wagesService = function () {
 
   this.extractMetadata = function (metadata) {
     var columns = metadata.view.columns;
-    for (var i = 0; i < columns.length; i++){
-      self.tableHeader.push({order: i, name: columns[i].fieldName, sort: 'asc' });
+    for (var i = 0; i < columns.length; i++) {
+      self.tableHeader.push({ order: i, name: columns[i].fieldName, sort: 'asc' });
 
       switch (columns[i].fieldName) {
         case 'jobtitle':
@@ -73,8 +76,8 @@ var wagesService = function () {
 
       self.tableBody.push({
         job_title: jobTitle,
-        average_male_wage: avgMale,
-        average_female_wage: avgFemale,
+        average_male_wage: parseFloat(avgMale),
+        average_female_wage: parseFloat(avgFemale),
         // difference_in_wage: (diff > 0) ? "Male" : "Female"
       });
 
@@ -87,6 +90,7 @@ var wagesService = function () {
     var right = page * self.pageLimit;
     var left = right - self.pageLimit;
 
+    self.paged = [];
     for (var i = left; i < right; i++) {
       self.paged.push(self.tableBody[i]);
     }
@@ -96,8 +100,53 @@ var wagesService = function () {
     // return temp;
   },
 
-  this.trigger = function (eventName) {
-    var event = self.events[eventName]
-    event(self.paged);
+    this.trigger = function (eventName) {
+      var event = self.events[eventName];
+      event({
+        tableHeader: self.tableHeader,
+        tableBody: self.paged
+      });
+    }
+
+  this.sort = function (column) {
+    self.quickSort(self.paged, 0, self.paged.length - 1, column)
+    self.trigger("change");
+  }
+
+  this.quickSort = function (arr, left, right, column) {
+    var len = arr.length,
+      pivot,
+      partitionIndex;
+
+
+    if (left < right) {
+      pivot = right;
+      partitionIndex = self.partition(arr, pivot, left, right, column);
+
+      //sort left and right
+      self.quickSort(arr, left, partitionIndex - 1);
+      self.quickSort(arr, partitionIndex + 1, right);
+    }
+    return arr;
+  }
+
+  this.partition = function (arr, pivot, left, right, column) {
+    var pivotValue = arr[pivot],
+      partitionIndex = left;
+
+    for (var i = left; i < right; i++) {
+      if (arr[i][column] < pivotValue[column]) {
+        self.swap(arr, i, partitionIndex);
+        partitionIndex++;
+      }
+    }
+    self.swap(arr, right, partitionIndex);
+    return partitionIndex;
+  }
+
+  this.swap = function (arr, i, j) {
+    var temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
   }
 }

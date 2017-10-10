@@ -8,7 +8,13 @@ var Wages = function () {
     self.loadTemplate().then(function () {
       self.wages.fetch();
       self.wages.on('change', self.render);
+    });
+  }
 
+  this.bindEvents = function () {
+    this.$el.find('th').unbind('click').click(function (e) {
+      // console.log('click');
+      self.sort();
     });
   }
 
@@ -20,7 +26,7 @@ var Wages = function () {
   this.loadTemplate = function () {
     var defer = $.Deferred();
 
-    $.get("wages/wages.component.html", function (data, textStatus, XMLHttpRequest) {
+    $.get("wages-table/wages-table.component.html", function (data, textStatus, XMLHttpRequest) {
       var template = data;
       var template = Handlebars.compile(template);
       self.template = template;
@@ -33,10 +39,15 @@ var Wages = function () {
 
   this.render = function (wages) {
     self.$el.html(
-      self.template({ wage: wages })
+      self.template({ wage: wages.tableBody, metadata: wages.tableHeader })
     );
 
-    self.renderTableSettings(wages);
+    self.bindEvents();
+    self.renderTableSettings();
+  }
+
+  this.sort = function () {
+    self.wages.sort("average_male_wage");
   }
 
   this.initialize();
